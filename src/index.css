@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Lora", Georgia, serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-[#FAF7F2] text-stone-800 font-sans;
+  }
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-reveal {
+  animation: reveal 600ms ease-out forwards;
+}
+
+@keyframes seal-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.animate-seal {
+  animation: seal-pulse 2s ease-in-out infinite;
+}
