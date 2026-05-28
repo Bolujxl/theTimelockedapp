@@ -13,7 +13,7 @@ export default function Countdown({
 }) {
   const { days, hours, minutes, seconds } = formatTimeRemaining(
     unlockDate,
-    now,
+    now, 
   )
 
   return (

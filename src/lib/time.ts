@@ -8,7 +8,7 @@ export function formatTimeRemaining(unlockDate: string, now: Date): {
   days: number
   hours: number
   minutes: number
-  seconds: number
+  seconds: number 
 } {
   const target = new Date(unlockDate)
   const totalSeconds = differenceInSeconds(target, now)
