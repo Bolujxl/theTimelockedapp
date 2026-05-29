@@ -1,0 +1,50 @@
+/*
+ * Color Token System — Time-Locked Letters
+ *
+ * Space-separated R G B values for every token.
+ * Light theme on :root, dark theme inside @media (prefers-color-scheme: dark).
+ * Imported in main.tsx before index.css so variables are available to all components.
+ *
+ * NOTE: variables are named --raw-* so they don't collide with Tailwind's
+ * --color-* theme variables in index.css.
+ */
+
+:root {
+  --raw-bg: 250 247 242;
+  --raw-on-bg: 41 37 36;
+  --raw-surface: 255 255 255;
+  --raw-on-surface: 68 64 60;
+  --raw-surface-muted: 245 245 244;
+  --raw-on-surface-muted: 87 83 78;
+  --raw-primary: 180 83 9;
+  --raw-on-primary: 250 250 249;
+  --raw-primary-container: 254 243 199;
+  --raw-on-primary-container: 180 83 9;
+  --raw-danger: 225 29 72;
+  --raw-on-danger: 255 255 255;
+  --raw-danger-container: 255 228 230;
+  --raw-on-danger-container: 225 29 72;
+  --raw-border: 231 229 228;
+  --raw-overlay: 0 0 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --raw-bg: 28 25 23;
+    --raw-on-bg: 245 245 244;
+    --raw-surface: 41 37 36;
+    --raw-on-surface: 231 229 228;
+    --raw-surface-muted: 55 50 47;
+    --raw-on-surface-muted: 168 162 158;
+    --raw-primary: 251 191 36;
+    --raw-on-primary: 28 25 23;
+    --raw-primary-container: 68 40 12;
+    --raw-on-primary-container: 251 191 36;
+    --raw-danger: 253 164 175;
+    --raw-on-danger: 28 25 23;
+    --raw-danger-container: 88 28 40;
+    --raw-on-danger-container: 255 228 230;
+    --raw-border: 68 64 60;
+    --raw-overlay: 0 0 0;
+  }
+}

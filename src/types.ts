@@ -4,4 +4,5 @@ export type Letter = {
   content: string;
   unlockDate: string;
   createdAt: string;
+  revealedAt: string | null;
 };
