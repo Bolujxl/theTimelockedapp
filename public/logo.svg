@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Time-Locked Letters">
+  <title>Time-Locked Letters</title>
+  <desc>A folded sheet of paper with a feather pen resting diagonally across the front.</desc>
+
+  <!-- Folded paper -->
+  <rect x="32" y="24" width="64" height="80" rx="8" fill="#FBF6EE" stroke="#B45309" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Fold line across the middle -->
+  <line x1="32" y1="64" x2="96" y2="64" stroke="#B45309" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Subtle curve under fold to suggest depth -->
+  <path d="M 32 64 Q 64 68 96 64" fill="none" stroke="#B45309" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+
+  <!-- Feather pen, rotated +30 degrees, plume rising to upper-right, nib pointing down-left -->
+  <g transform="translate(64, 76) rotate(30)">
+    <!-- Feather body (leaf shape) -->
+    <path d="M 0 0 Q -3 -18 0 -38 Q 3 -42 6 -38 Q 9 -18 6 0 Q 3 4 0 0 Z" fill="#B45309"/>
+
+    <!-- Rachis (central shaft, extends below body as the nib) -->
+    <path d="M 3 -38 L 3 14" stroke="#B45309" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+    <!-- Barbs -->
+    <path d="M 0 -32 L 3 -30 M 0 -26 L 3 -24 M 0 -20 L 3 -18 M 0 -14 L 3 -12 M 0 -8 L 3 -6 M 6 -32 L 3 -30 M 6 -26 L 3 -24 M 6 -20 L 3 -18 M 6 -14 L 3 -12 M 6 -8 L 3 -6" stroke="#FBF6EE" stroke-width="1" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

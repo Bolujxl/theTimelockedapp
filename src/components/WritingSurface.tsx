@@ -1,27 +1,53 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { X } from 'lucide-react'
 import type { Letter } from '../types'
 import DateTimePicker from './DateTimePicker'
 
 const STRIP_CONTROL = /[\u0000-\u001F\u007F-\u009F\u200B-\u200F\u2028-\u202F\uFEFF]/g
+const DRAFT_KEY = 'time-locked-letters:draft'
 
 type Props = {
   onSubmit: (letter: Letter) => void
   onClose: () => void
 }
 
+function loadDraft(): { recipient: string; content: string } | null {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY)
+    if (!raw) return null
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
+}
+
+function saveDraft(recipient: string, content: string) {
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({ recipient, content }))
+  } catch {}
+}
+
+function clearDraft() {
+  try {
+    localStorage.removeItem(DRAFT_KEY)
+  } catch {}
+}
+
 export default function WritingSurface({ onSubmit, onClose }: Props) {
-  const [recipient, setRecipient] = useState('')
-  const [content, setContent] = useState('')
+  const [recipient, setRecipient] = useState(() => loadDraft()?.recipient ?? '')
+  const [content, setContent] = useState(() => loadDraft()?.content ?? '')
   const [unlockDate, setUnlockDate] = useState<Date | null>(null)
   const [error, setError] = useState('')
+  const [closing, setClosing] = useState(false)
   const bodyRef = useRef<HTMLTextAreaElement>(null)
+  const draftTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     bodyRef.current?.focus()
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = ''
+      if (draftTimer.current) clearTimeout(draftTimer.current)
     }
   }, [])
 
@@ -33,14 +59,29 @@ export default function WritingSurface({ onSubmit, onClose }: Props) {
     return () => document.removeEventListener('keydown', handleKeyDown)
   })
 
+  useEffect(() => {
+    if (draftTimer.current) clearTimeout(draftTimer.current)
+    draftTimer.current = setTimeout(() => {
+      if (recipient || content) {
+        saveDraft(recipient, content)
+      }
+    }, 500)
+  }, [recipient, content])
+
   const hasContent = recipient.trim().length > 0 || content.trim().length > 0
+
+  const triggerClose = useCallback(() => {
+    setClosing(true)
+    setTimeout(() => onClose(), 200)
+  }, [onClose])
 
   function handleClose() {
     if (hasContent) {
       const ok = window.confirm('Discard this letter?')
       if (!ok) return
+      clearDraft()
     }
-    onClose()
+    triggerClose()
   }
 
   const isValid =
@@ -68,6 +109,7 @@ export default function WritingSurface({ onSubmit, onClose }: Props) {
       revealedAt: null,
     }
 
+    clearDraft()
     onSubmit(letter)
     setRecipient('')
     setContent('')
@@ -76,7 +118,7 @@ export default function WritingSurface({ onSubmit, onClose }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-background flex flex-col">
+    <div className={`fixed inset-0 z-50 bg-background flex flex-col transition-all duration-200 ${closing ? 'opacity-0 translate-y-5' : 'opacity-100'}`}>
       {/* Close button */}
       <div className="flex justify-end px-4 pt-4 sm:px-6 sm:pt-6">
         <button
@@ -118,7 +160,7 @@ export default function WritingSurface({ onSubmit, onClose }: Props) {
           maxLength={10000}
           rows={1}
           className="flex-1 w-full bg-transparent border-0 resize-none
-                     text-xl leading-relaxed font-serif text-on-surface
+                     text-2xl leading-relaxed font-serif text-on-surface
                      placeholder:text-on-surface-muted
                      focus:outline-none"
         />
